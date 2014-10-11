@@ -33,6 +33,22 @@ public class NamedNode extends ParseableNode {
 		this.stat = stat;
 	}
 
+	@Override public void resolve(Calculation context, int index) {
+		super.resolve(context, index);
+		String name = stat.toString();
+
+		FunctionProvider provider = (FunctionProvider) context.services.get(FunctionProvider.NAME);
+		PluginFunction function = provider.get(name);
+
+		if (function != null) {
+			context.algorithm.set(index, new FunctionNode(function));
+		} else {
+			VariableProvider vars = (VariableProvider) context.services.get(VariableProvider.NAME);
+			context.algorithm.set(index, vars.getVariable(name));
+		}
+
+	}
+
 	@Override public String toString() {
 		return String.valueOf(stat);
 	}

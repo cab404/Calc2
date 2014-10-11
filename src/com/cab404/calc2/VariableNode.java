@@ -4,13 +4,13 @@ package com.cab404.calc2;
  * @author cab404
  */
 public class VariableNode extends Node {
+	Node replacement = this;
 
+	@Override public void resolve(Calculation context, int index) {
+		context.algorithm.set(index, replacement);
+	}
 
-	/**
-	 * Default node constructor
-	 *
-	 * @param stat Statement from expression
-	 */
-	public VariableNode(CharSequence stat) {
+	@Override public int priority() {
+		return -9001;
 	}
 }

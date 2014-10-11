@@ -12,42 +12,42 @@ public class Calculation {
 
 	final Map<String, Object> services;
 	final NodeFactory nodeFactory;
-	List<Node> algorythm;
+	List<Node> algorithm;
 
 	public void calculate() {
 		HashSet<Node> processed = new HashSet<>();
 
 		processing:
 		while (true) {
-			System.out.println(algorythm);
+			System.out.println(algorithm);
 
-			processed.addAll(algorythm);
+			processed.addAll(algorithm);
 
 			/* Preparing priority list */
-			List<Node> priorities = new ArrayList<>(algorythm.size());
-			for (Node node : algorythm)
+			List<Node> priorities = new ArrayList<>(algorithm.size());
+			for (Node node : algorithm)
 				priorities.add(node);
 
 			Collections.sort(priorities, NodeComparator.INSTANCE);
 
 			/* Resolving all nodes */
 			for (Node node : priorities)
-				if (algorythm.contains(node))
-					node.resolve(this, algorythm.indexOf(node));
+				if (algorithm.contains(node))
+					node.resolve(this, algorithm.indexOf(node));
 
 			/* Checking for new unprocessed nodes */
-			for (Node node : algorythm)
+			for (Node node : algorithm)
 				if (!processed.contains(node))
 					continue processing;
 
-			System.out.println(algorythm);
+			System.out.println(algorithm);
 			break;
 		}
 
 	}
 
 	private Calculation(Calculation base, int start, int end) {
-		algorythm = base.algorythm.subList(start, end);
+		algorithm = base.algorithm.subList(start, end);
 		nodeFactory = base.nodeFactory;
 		services = base.services;
 	}
@@ -60,9 +60,15 @@ public class Calculation {
 		calculation.calculate();
 	}
 
+
+	public Calculation(Calculation base) {
+		nodeFactory = base.nodeFactory;
+		services = base.services;
+	}
+
 	public Calculation(NodeFactory nodeFactory) {
 		this.nodeFactory = nodeFactory;
-		this.algorythm = new ArrayList<>();
+		this.algorithm = new ArrayList<>();
 		this.services = new HashMap<>();
 	}
 
@@ -72,7 +78,7 @@ public class Calculation {
 	 */
 	public void prepare(CharSequence exp)
 			throws ParseException {
-		algorythm.clear();
+		algorithm.clear();
 
 		final int length = exp.length();
 
@@ -109,7 +115,7 @@ public class Calculation {
 					try {
 						current_def = nodeFactory.getNodeDefenition(buffer.charAt(0), current_char);
 					} catch (NodeTypeIrresolvableException e) {
-						algorythm.add(current_def.instatinate(buffer));
+						algorithm.add(current_def.instatinate(buffer));
 						buffer = new StringBuilder();
 						current_def = null;
 						i--;
@@ -121,7 +127,7 @@ public class Calculation {
 		}
 
 		if (buffer.length() > 0 && current_def != null)
-			algorythm.add(current_def.instatinate(buffer));
+			algorithm.add(current_def.instatinate(buffer));
 
 	}
 

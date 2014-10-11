@@ -25,6 +25,10 @@ public class NumberNode extends ParseableNode {
 		value = Double.parseDouble(stat.toString());
 	}
 
+	public NumberNode(double value) {
+		super(null);
+		this.value = value;
+	}
 
 	@Override public void resolve(Calculation context, int index) {
 		super.resolve(context, index);

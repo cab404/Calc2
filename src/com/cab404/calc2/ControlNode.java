@@ -12,6 +12,7 @@ public class ControlNode extends ParseableNode {
 					switch (ch) {
 						case '(':
 						case ')':
+						case ';':
 						case ',':
 							return true;
 						default:
@@ -48,7 +49,7 @@ public class ControlNode extends ParseableNode {
 
 	@Override public void resolve(Calculation context, int index) {
 		if (val == '(')
-			context.algorythm.add(index, new NestedCalculationNode(context, index));
+			context.algorithm.add(index, new NestedCalculationNode(context, index));
 		if (val == ')')
 			throw new RuntimeException("Wrong brackets!");
 	}
