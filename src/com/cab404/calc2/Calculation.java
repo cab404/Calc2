@@ -19,8 +19,6 @@ public class Calculation {
 
 		processing:
 		while (true) {
-			System.out.println(algorithm);
-
 			processed.addAll(algorithm);
 
 			/* Preparing priority list */
@@ -40,7 +38,6 @@ public class Calculation {
 				if (!processed.contains(node))
 					continue processing;
 
-			System.out.println(algorithm);
 			break;
 		}
 

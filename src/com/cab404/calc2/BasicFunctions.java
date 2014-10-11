@@ -91,6 +91,23 @@ public class BasicFunctions {
 					throw new UnsupportedOperationException();
 				}
 
+			},
+			RES = new PluginFunction() {
+				@Override public String getName() {
+					return "res";
+				}
+				@Override public Node calculatePrefix(Node single) {
+					return calculatePostfix(single);
+				}
+				@Override public Node calculate(Node first, Node second) {
+					throw new UnsupportedOperationException();
+				}
+
+				@Override public Node calculatePostfix(Node single) {
+					NestedCalculationNode calc = (NestedCalculationNode) single;
+					return calc.nested.algorithm.get(calc.nested.algorithm.size() - 1);
+				}
+
 			};
 
 }

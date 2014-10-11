@@ -13,4 +13,9 @@ public class VariableNode extends Node {
 	@Override public int priority() {
 		return -9001;
 	}
+
+	@Override public String toString() {
+		return super.toString() + (replacement != this ? "(" + replacement + ")" : "");
+	}
+
 }

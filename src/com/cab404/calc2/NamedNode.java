@@ -10,7 +10,10 @@ public class NamedNode extends ParseableNode {
 	private static final CharField BODY = new CharField() {
 		@Override public boolean contains(char ch) {
 			return !Character.isDigit(ch) && !Character.isWhitespace(ch) &&
-					ch != ')' && ch != '(' && ch != ',';
+					ch != ')' &&
+					ch != '(' &&
+					ch != ';' &&
+					ch != ',';
 		}
 	};
 

@@ -30,4 +30,8 @@ public class FunctionNode extends Node {
 		Node first = context.algorithm.remove(index - 1);
 		context.algorithm.set(index - 1, fun.calculate(first, second));
 	}
+
+	@Override public String toString() {
+		return fun.getName();
+	}
 }
