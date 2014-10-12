@@ -43,14 +43,16 @@ public class ControlNode extends ParseableNode {
 		return "'" + val + "'";
 	}
 
+	/* As fast as we could. But still will leave some place for others. */
 	@Override public int priority() {
-		return -9001;
+		return Era.CONTROL_ERA;
 	}
 
-	@Override public void resolve(Calculation context, int index) {
+	@Override public Node resolve(Calculation context, int index) {
 		if (val == '(')
-			context.algorithm.add(index, new NestedCalculationNode(context, index));
+			return context.add(index, new NestedCalculationNode(context, index));
 		if (val == ')')
 			throw new RuntimeException("Wrong brackets!");
+		return null;
 	}
 }

@@ -64,7 +64,6 @@ public class NestedCalculationNode extends Node {
 							} else {
 								calculated_lines.add(cast);
 
-								System.out.println(nested.algorithm.subList(last, k));
 								System.out.println("part: " + nested.algorithm.subList(last, k));
 								nested.calculateSandboxed(last, k);
 
@@ -97,20 +96,19 @@ public class NestedCalculationNode extends Node {
 	/**
 	 * Deleting unnecessary brackets
 	 */
-	@Override public void resolve(Calculation context, int index) {
+	@Override public Node resolve(Calculation context, int index) {
 		/* Resolve me! */
 		for (; ; )
 			if (nested.algorithm.size() == 1) {
 				Node single = nested.algorithm.get(0);
 
-				context.algorithm.set(index, single);
 				if (single instanceof NestedCalculationNode)
 					nested.algorithm = ((NestedCalculationNode) single).nested.algorithm;
 				else
-					break;
+					return context.set(index, single);
 
 			} else
-				break;
+				return null;
 	}
 
 	@Override public String toString() {
@@ -118,6 +116,6 @@ public class NestedCalculationNode extends Node {
 	}
 
 	@Override public int priority() {
-		return -9001;
+		return Era.VARIABLE_ERA;
 	}
 }

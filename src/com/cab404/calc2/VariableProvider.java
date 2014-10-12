@@ -10,6 +10,16 @@ public class VariableProvider {
 
 	private HashMap<String, VariableNode> variables = new HashMap<>();
 
+	public VariableProvider() {
+	}
+
+	/**
+	 * Hides everything ontop
+	 */
+	public VariableProvider(VariableProvider base) {
+		this.variables = new HashMap<>(base.variables);
+	}
+
 	public VariableNode getVariable(String name) {
 		if (!variables.containsKey(name))
 			variables.put(name, new VariableNode());

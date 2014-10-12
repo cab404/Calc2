@@ -22,6 +22,9 @@ public class BasicFunctions {
 		@Override public Node calculatePostfix(Node single) {
 			throw new UnsupportedOperationException();
 		}
+		@Override public int priority() {
+			return Era.FUNCTIONAL_ERA + 200;
+		}
 	},
 			SUB = new PluginFunction() {
 				@Override public String getName() {
@@ -37,6 +40,9 @@ public class BasicFunctions {
 
 				@Override public Node calculatePostfix(Node single) {
 					throw new UnsupportedOperationException();
+				}
+				@Override public int priority() {
+					return Era.FUNCTIONAL_ERA + 200;
 				}
 
 			},
@@ -54,6 +60,9 @@ public class BasicFunctions {
 
 				@Override public Node calculatePostfix(Node single) {
 					throw new UnsupportedOperationException();
+				}
+				@Override public int priority() {
+					return Era.FUNCTIONAL_ERA + 100;
 				}
 
 			},
@@ -73,6 +82,9 @@ public class BasicFunctions {
 		@Override public Node calculatePostfix(Node single) {
 			throw new UnsupportedOperationException();
 		}
+		@Override public int priority() {
+			return Era.FUNCTIONAL_ERA + 100;
+		}
 
 	},
 			EQ = new PluginFunction() {
@@ -90,6 +102,9 @@ public class BasicFunctions {
 				@Override public Node calculatePostfix(Node single) {
 					throw new UnsupportedOperationException();
 				}
+				@Override public int priority() {
+					return Era.VARIABLE_ERA + 2;
+				}
 
 			},
 			RES = new PluginFunction() {
@@ -104,8 +119,16 @@ public class BasicFunctions {
 				}
 
 				@Override public Node calculatePostfix(Node single) {
-					NestedCalculationNode calc = (NestedCalculationNode) single;
-					return calc.nested.algorithm.get(calc.nested.algorithm.size() - 1);
+					if (single instanceof NestedCalculationNode) {
+						NestedCalculationNode calc = (NestedCalculationNode) single;
+						return calc.nested.algorithm.get(calc.nested.algorithm.size() - 1);
+					}
+					return single;
+				}
+
+				/** Right after nested */
+				@Override public int priority() {
+					return Era.VARIABLE_ERA + 1;
 				}
 
 			};

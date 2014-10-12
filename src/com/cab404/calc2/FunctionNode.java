@@ -10,25 +10,33 @@ public class FunctionNode extends Node {
 		this.fun = fun;
 	}
 
-	@Override public void resolve(Calculation context, int index) {
+	@Override public Node resolve(Calculation context, int index) {
 		int size = context.algorithm.size();
-		if (size == 1) return;
+		if (size == 1) return null;
 
 		if (index == 0) {
 			Node node = context.algorithm.remove(index + 1);
-			context.algorithm.set(index, fun.calculatePrefix(node));
-			return;
+			Node calculated = fun.calculatePrefix(node);
+			context.algorithm.set(index, calculated);
+			return calculated;
 		}
 
 		if (index == size - 1) {
 			Node node = context.algorithm.remove(index - 1);
-			context.algorithm.set(index - 1, fun.calculatePostfix(node));
-			return;
+			Node calculated = fun.calculatePostfix(node);
+			context.algorithm.set(index - 1, calculated);
+			return calculated;
 		}
 
 		Node second = context.algorithm.remove(index + 1);
 		Node first = context.algorithm.remove(index - 1);
-		context.algorithm.set(index - 1, fun.calculate(first, second));
+		Node calculated = fun.calculate(first, second);
+		context.algorithm.set(index - 1, calculated);
+		return calculated;
+	}
+
+	@Override public int priority() {
+		return fun.priority();
 	}
 
 	@Override public String toString() {

@@ -10,43 +10,65 @@ import java.util.*;
  */
 public class Calculation {
 
-	final Map<String, Object> services;
-	final NodeFactory nodeFactory;
+	VariableProvider variables;
+	FunctionProvider functions;
+	NodeFactory nodeFactory;
 	List<Node> algorithm;
+
+	/**
+	 * Like algorithm.set, but returns new node
+	 */
+	public Node set(int index, Node node) {
+		algorithm.set(index, node);
+		return node;
+	}
+
+	/**
+	 * Like algorithm.add, but returns new node
+	 */
+	public Node add(int index, Node node) {
+		algorithm.add(index, node);
+		return node;
+	}
 
 	public void calculate() {
 		HashSet<Node> processed = new HashSet<>();
+		List<Node> priorities = new ArrayList<>();
 
-		processing:
-		while (true) {
-			processed.addAll(algorithm);
+		/* Preparing priority list */
+		System.out.println(algorithm.size());
+		priorities.addAll(algorithm);
+		System.out.println(priorities.size());
 
-			/* Preparing priority list */
-			List<Node> priorities = new ArrayList<>(algorithm.size());
-			for (Node node : algorithm)
-				priorities.add(node);
+		int iter = 0;
 
-			Collections.sort(priorities, NodeComparator.INSTANCE);
+		/* Resolving all nodes */
+		while (!priorities.isEmpty()) {
+			Collections.sort(priorities);
+			Node node = priorities.remove(0);
 
-			/* Resolving all nodes */
-			for (Node node : priorities)
-				if (algorithm.contains(node))
-					node.resolve(this, algorithm.indexOf(node));
+			if (!processed.contains(node)) {
+				if (algorithm.contains(node)) {
+					Node new_node = node.resolve(this, algorithm.indexOf(node));
 
-			/* Checking for new unprocessed nodes */
-			for (Node node : algorithm)
-				if (!processed.contains(node))
-					continue processing;
+					if (new_node != null)
+						priorities.add(new_node);
 
-			break;
+				} else
+					iter++;
+			}
+
 		}
+
+		System.out.println("IterCount " + iter);
 
 	}
 
 	private Calculation(Calculation base, int start, int end) {
-		algorithm = base.algorithm.subList(start, end);
 		nodeFactory = base.nodeFactory;
-		services = base.services;
+		algorithm = base.algorithm.subList(start, end);
+		variables = new VariableProvider();
+		functions = new FunctionProvider();
 	}
 
 	/**
@@ -54,19 +76,23 @@ public class Calculation {
 	 */
 	public void calculateSandboxed(int startIndex, int endIndex) {
 		Calculation calculation = new Calculation(this, startIndex, endIndex);
+		calculation.variables = variables;
+		calculation.functions = functions;
 		calculation.calculate();
 	}
 
 
 	public Calculation(Calculation base) {
 		nodeFactory = base.nodeFactory;
-		services = base.services;
+		functions = base.functions;
+		variables = new VariableProvider(base.variables);
 	}
 
 	public Calculation(NodeFactory nodeFactory) {
 		this.nodeFactory = nodeFactory;
 		this.algorithm = new ArrayList<>();
-		this.services = new HashMap<>();
+		variables = new VariableProvider();
+		functions = new FunctionProvider();
 	}
 
 

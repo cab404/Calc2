@@ -30,8 +30,8 @@ public class NumberNode extends ParseableNode {
 		this.value = value;
 	}
 
-	@Override public void resolve(Calculation context, int index) {
-		super.resolve(context, index);
+	@Override public Node resolve(Calculation context, int index) {
+		return super.resolve(context, index);
 	}
 
 	public static class Body implements CharField {
