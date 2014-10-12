@@ -1,4 +1,4 @@
-package com.cab404.calc2;
+package com.cab404.calc2.exceptions;
 
 /**
  * @author cab404

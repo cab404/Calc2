@@ -1,4 +1,6 @@
-package com.cab404.calc2;
+package com.cab404.calc2.nodes.generated;
+
+import com.cab404.calc2.nodes.Node;
 
 /**
  * Node with constructor made for parsing

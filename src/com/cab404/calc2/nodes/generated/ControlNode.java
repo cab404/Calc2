@@ -1,11 +1,18 @@
-package com.cab404.calc2;
+package com.cab404.calc2.nodes.generated;
+
+import com.cab404.calc2.base.Calculation;
+import com.cab404.calc2.nodes.Era;
+import com.cab404.calc2.nodes.Node;
+import com.cab404.calc2.nodes.parse.NodeDefinition;
+import com.cab404.calc2.nodes.parse.NodeDefinitionImpl;
+import com.cab404.calc2.util.CharField;
 
 /**
  * @author cab404
  */
 public class ControlNode extends ParseableNode {
 
-	public static final NodeDefinition DEFINITION = new NodeDefinition(
+	public static final NodeDefinition DEFINITION = new NodeDefinitionImpl(
 			ControlNode.class,
 			new CharField() {
 				@Override public boolean contains(char ch) {
@@ -27,7 +34,7 @@ public class ControlNode extends ParseableNode {
 			}
 	);
 
-	char val;
+	public final char val;
 
 	/**
 	 * Default node constructor

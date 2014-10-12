@@ -1,4 +1,8 @@
-package com.cab404.calc2;
+package com.cab404.calc2.nodes.generated;
+
+import com.cab404.calc2.base.Calculation;
+import com.cab404.calc2.nodes.Era;
+import com.cab404.calc2.nodes.Node;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,7 +15,7 @@ import java.util.Set;
  * @author cab404
  */
 public class NestedCalculationNode extends Node {
-	Calculation nested;
+	public final Calculation nested;
 
 	public NestedCalculationNode(Calculation base, int id) {
 		List<Node> sublist = new ArrayList<>();
@@ -64,13 +68,11 @@ public class NestedCalculationNode extends Node {
 							} else {
 								calculated_lines.add(cast);
 
-								System.out.println("part: " + nested.algorithm.subList(last, k));
 								nested.calculateSandboxed(last, k);
 
 								last = k = 0;
 							}
 						} else if (k == nested.algorithm.size() - 1) {
-							System.out.println("last: " + nested.algorithm.subList(last, k + 1));
 							nested.calculateSandboxed(last, k + 1);
 						}
 

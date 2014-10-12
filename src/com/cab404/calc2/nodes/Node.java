@@ -1,4 +1,6 @@
-package com.cab404.calc2;
+package com.cab404.calc2.nodes;
+
+import com.cab404.calc2.base.Calculation;
 
 /**
  * @author cab404

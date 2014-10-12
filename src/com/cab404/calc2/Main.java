@@ -1,5 +1,15 @@
 package com.cab404.calc2;
 
+import com.cab404.calc2.base.Calculation;
+import com.cab404.calc2.base.NodeFactory;
+import com.cab404.calc2.impl.BasicFunctions;
+import com.cab404.calc2.nodes.generated.ControlNode;
+import com.cab404.calc2.nodes.generated.NumberNode;
+import com.cab404.calc2.plugins.functions.FunctionProvider;
+import com.cab404.calc2.plugins.NameResolver;
+import com.cab404.calc2.plugins.VariableProvider;
+
+import java.io.*;
 import java.text.ParseException;
 
 /**
@@ -11,25 +21,42 @@ public class Main implements Runnable {
 		NodeFactory factory = new NodeFactory();
 		factory.register(ControlNode.DEFINITION);
 		factory.register(NumberNode.DEFINITION);
-		factory.register(NamedNode.DEFINITION);
+
+		NameResolver def = new NameResolver();
+
+		FunctionProvider fp = new FunctionProvider();
+
+		fp.register(BasicFunctions.SUM);
+		fp.register(BasicFunctions.SUB);
+		fp.register(BasicFunctions.MUL);
+		fp.register(BasicFunctions.DIV);
+		fp.register(BasicFunctions.RES);
+		fp.register(BasicFunctions.EQ);
+
+		def.add(fp);
+		def.add(new VariableProvider());
+
+		factory.register(def);
+
+		Calculation calculation = new Calculation(factory);
+
 
 		try {
 
-			Calculation calculation = new Calculation(factory);
 
-			calculation.functions.register(BasicFunctions.SUM);
-			calculation.functions.register(BasicFunctions.SUB);
-			calculation.functions.register(BasicFunctions.MUL);
-			calculation.functions.register(BasicFunctions.DIV);
-			calculation.functions.register(BasicFunctions.RES);
-			calculation.functions.register(BasicFunctions.EQ);
+			File test = new File("testprogram.calc");
+			StringBuilder builder = new StringBuilder();
+			try {
+				BufferedReader reader = new BufferedReader(new FileReader(test));
+				String read = null;
+				while ((read = reader.readLine()) != null)
+					builder.append(read);
 
-			calculation.prepare("" +
-					"res (" +
-					"   abc = (356-((-2*42)+17-28));" +
-					"   cmd = 10e0;" +
-					"   cmd" +
-					")");
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+
+			calculation.prepare(builder);
 			System.out.println("start: " + calculation.algorithm);
 			calculation.calculate();
 			System.out.println("final: " + calculation.algorithm);

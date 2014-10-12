@@ -1,4 +1,10 @@
-package com.cab404.calc2;
+package com.cab404.calc2.nodes.generated;
+
+import com.cab404.calc2.base.Calculation;
+import com.cab404.calc2.util.CharField;
+import com.cab404.calc2.nodes.parse.NodeDefinition;
+import com.cab404.calc2.nodes.parse.NodeDefinitionImpl;
+import com.cab404.calc2.nodes.Node;
 
 /**
  * @author cab404
@@ -6,7 +12,7 @@ package com.cab404.calc2;
 public class NumberNode extends ParseableNode {
 
 	public static final NodeDefinition DEFINITION =
-			new NodeDefinition(
+			new NodeDefinitionImpl(
 					NumberNode.class,
 					new CharField() {
 						@Override public boolean contains(char ch) {return Character.isDigit(ch);}
@@ -17,7 +23,7 @@ public class NumberNode extends ParseableNode {
 			);
 
 
-	double value;
+	public double value;
 
 	public NumberNode(CharSequence stat)
 	throws NumberFormatException {
@@ -32,12 +38,6 @@ public class NumberNode extends ParseableNode {
 
 	@Override public Node resolve(Calculation context, int index) {
 		return super.resolve(context, index);
-	}
-
-	public static class Body implements CharField {
-		@Override public boolean contains(char ch) {
-			return Character.isDigit(ch) || ch == '.' || ch == 'e';
-		}
 	}
 
 	@Override public String toString() {

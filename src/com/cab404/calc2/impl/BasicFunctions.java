@@ -1,4 +1,11 @@
-package com.cab404.calc2;
+package com.cab404.calc2.impl;
+
+import com.cab404.calc2.nodes.generated.NestedCalculationNode;
+import com.cab404.calc2.plugins.functions.PluginFunction;
+import com.cab404.calc2.nodes.Era;
+import com.cab404.calc2.nodes.Node;
+import com.cab404.calc2.nodes.generated.NumberNode;
+import com.cab404.calc2.nodes.parse.VariableNode;
 
 /**
  * @author cab404
@@ -128,7 +135,7 @@ public class BasicFunctions {
 
 				/** Right after nested */
 				@Override public int priority() {
-					return Era.VARIABLE_ERA + 1;
+					return Era.VARIABLE_ERA - 1;
 				}
 
 			};

@@ -1,11 +1,14 @@
-package com.cab404.calc2;
+package com.cab404.calc2.plugins;
+
+import com.cab404.calc2.nodes.Node;
+import com.cab404.calc2.nodes.parse.VariableNode;
 
 import java.util.HashMap;
 
 /**
  * @author cab404
  */
-public class VariableProvider {
+public class VariableProvider extends NodeForNameProvider {
 	public static final String NAME = "VariableProvider";
 
 	private HashMap<String, VariableNode> variables = new HashMap<>();
@@ -26,4 +29,11 @@ public class VariableProvider {
 		return variables.get(name);
 	}
 
+	@Override public Node nodeForName(String name) {
+		return getVariable(name);
+	}
+
+	@Override public int priority() {
+		return 90000;
+	}
 }

@@ -1,7 +1,14 @@
-package com.cab404.calc2;
+package com.cab404.calc2.base;
+
+import com.cab404.calc2.exceptions.NodeTypeIrresolvableException;
+import com.cab404.calc2.nodes.Node;
+import com.cab404.calc2.nodes.parse.NodeDefinition;
 
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * Core launcher
@@ -10,10 +17,10 @@ import java.util.*;
  */
 public class Calculation {
 
-	VariableProvider variables;
-	FunctionProvider functions;
-	NodeFactory nodeFactory;
-	List<Node> algorithm;
+	//	VariableProvider variables;
+//	FunctionProvider functions;
+	public NodeFactory nodeFactory;
+	public List<Node> algorithm;
 
 	/**
 	 * Like algorithm.set, but returns new node
@@ -36,9 +43,7 @@ public class Calculation {
 		List<Node> priorities = new ArrayList<>();
 
 		/* Preparing priority list */
-		System.out.println(algorithm.size());
 		priorities.addAll(algorithm);
-		System.out.println(priorities.size());
 
 		int iter = 0;
 
@@ -60,15 +65,21 @@ public class Calculation {
 
 		}
 
-		System.out.println("IterCount " + iter);
-
 	}
 
 	private Calculation(Calculation base, int start, int end) {
 		nodeFactory = base.nodeFactory;
 		algorithm = base.algorithm.subList(start, end);
-		variables = new VariableProvider();
-		functions = new FunctionProvider();
+	}
+
+	private void onNestedCreation(Calculation nested) {
+//		try {
+//			NamedNodeDefinition def = (NamedNodeDefinition) nodeFactory.getNodeDefinition('n', 'a');
+
+
+//		} catch (NodeTypeIrresolvableException e) {
+//			throw new RuntimeException("Cannot get named node definition", e);
+//		}
 	}
 
 	/**
@@ -76,23 +87,18 @@ public class Calculation {
 	 */
 	public void calculateSandboxed(int startIndex, int endIndex) {
 		Calculation calculation = new Calculation(this, startIndex, endIndex);
-		calculation.variables = variables;
-		calculation.functions = functions;
 		calculation.calculate();
 	}
 
 
 	public Calculation(Calculation base) {
 		nodeFactory = base.nodeFactory;
-		functions = base.functions;
-		variables = new VariableProvider(base.variables);
+		base.onNestedCreation(this);
 	}
 
 	public Calculation(NodeFactory nodeFactory) {
 		this.nodeFactory = nodeFactory;
 		this.algorithm = new ArrayList<>();
-		variables = new VariableProvider();
-		functions = new FunctionProvider();
 	}
 
 
@@ -136,9 +142,9 @@ public class Calculation {
 				 */
 				else {
 					try {
-						current_def = nodeFactory.getNodeDefenition(buffer.charAt(0), current_char);
+						current_def = nodeFactory.getNodeDefinition(buffer.charAt(0), current_char);
 					} catch (NodeTypeIrresolvableException e) {
-						algorithm.add(current_def.instatinate(buffer));
+						algorithm.add(current_def.instance(buffer));
 						buffer = new StringBuilder();
 						current_def = null;
 						i--;
@@ -150,7 +156,7 @@ public class Calculation {
 		}
 
 		if (buffer.length() > 0 && current_def != null)
-			algorithm.add(current_def.instatinate(buffer));
+			algorithm.add(current_def.instance(buffer));
 
 	}
 

@@ -1,4 +1,7 @@
-package com.cab404.calc2;
+package com.cab404.calc2.base;
+
+import com.cab404.calc2.exceptions.NodeTypeIrresolvableException;
+import com.cab404.calc2.nodes.parse.NodeDefinition;
 
 import java.util.ArrayList;
 
@@ -21,7 +24,7 @@ public class NodeFactory {
 		throw new NodeTypeIrresolvableException();
 	}
 
-	public NodeDefinition getNodeDefenition(char start, char body)
+	public NodeDefinition getNodeDefinition(char start, char body)
 	throws NodeTypeIrresolvableException {
 		for (NodeDefinition def : registeredDefenitions)
 			if (def.compatibleAsStart(start) && def.compatibleAsBody(body))

@@ -1,6 +1,8 @@
-package com.cab404.calc2;
+package com.cab404.calc2.nodes;
 
 /**
+ * Priorities
+ *
  * @author cab404
  */
 public class Era {

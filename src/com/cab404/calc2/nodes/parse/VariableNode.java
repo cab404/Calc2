@@ -1,10 +1,14 @@
-package com.cab404.calc2;
+package com.cab404.calc2.nodes.parse;
+
+import com.cab404.calc2.base.Calculation;
+import com.cab404.calc2.nodes.Era;
+import com.cab404.calc2.nodes.Node;
 
 /**
  * @author cab404
  */
 public class VariableNode extends Node {
-	Node replacement = this;
+	public Node replacement = this;
 
 	@Override public Node resolve(Calculation context, int index) {
 		if (replacement instanceof VariableNode && replacement != this)
