@@ -7,7 +7,10 @@ public class VariableNode extends Node {
 	Node replacement = this;
 
 	@Override public Node resolve(Calculation context, int index) {
-		return context.set(index, replacement);
+		if (replacement instanceof VariableNode && replacement != this)
+			return replacement.resolve(context, index);
+		else
+			return context.set(index, replacement);
 	}
 
 	@Override public int priority() {

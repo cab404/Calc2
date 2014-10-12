@@ -25,12 +25,11 @@ public class Main implements Runnable {
 			calculation.functions.register(BasicFunctions.EQ);
 
 			calculation.prepare("" +
-					"somevar = (res(" +
+					"res (" +
 					"   abc = (356-((-2*42)+17-28));" +
-					"   cda = 45678;" +
-					"   abca = (abc * abc)" +
-					"   abca * abca" +
-					"))");
+					"   cmd = 10e0;" +
+					"   cmd" +
+					")");
 			System.out.println("start: " + calculation.algorithm);
 			calculation.calculate();
 			System.out.println("final: " + calculation.algorithm);
