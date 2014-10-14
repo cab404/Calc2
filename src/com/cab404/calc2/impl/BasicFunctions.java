@@ -128,14 +128,14 @@ public class BasicFunctions {
 				@Override public Node calculatePostfix(Node single) {
 					if (single instanceof NestedCalculationNode) {
 						NestedCalculationNode calc = (NestedCalculationNode) single;
-						return calc.calc.algorithm.get(calc.calc.algorithm.size() - 1);
+						return calc.nested.algorithm.get(calc.nested.algorithm.size() - 1);
 					}
 					return single;
 				}
 
 				/** Right after nested */
 				@Override public int priority() {
-					return Era.VARIABLE_ERA - 1;
+					return Era.FOLDING_ERA + 1;
 				}
 
 			};

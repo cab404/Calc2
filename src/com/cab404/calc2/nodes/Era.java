@@ -7,8 +7,9 @@ package com.cab404.calc2.nodes;
  */
 public class Era {
 	public static final int
-			CONTROL_ERA = -900000000,
-			VARIABLE_ERA = -900000,
-			FUNCTIONAL_ERA = 0;
+			CONTROL_ERA =    -900000000,
+			FOLDING_ERA =    -800000000,
+			VARIABLE_ERA =   -700000000,
+			FUNCTIONAL_ERA = -600000000;
 
 }

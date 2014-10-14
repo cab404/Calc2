@@ -66,10 +66,13 @@ public class ControlNode extends ParseableNode {
 	}
 
 	@Override public Node resolve(Calculation context, int index) {
-		if (val == '(')
-			return context.add(index, new NestedCalculationNode(context, index));
+		if (val == '(') {
+			NestedCalculationNode calc = new NestedCalculationNode();
+			calc.wrap(context, index);
+			return context.add(index, calc);
+		}
 		if (val == ')')
-			throw new RuntimeException("Wrong brackets!");
+			throw new RuntimeException("Brackets wrong!");
 		return null;
 	}
 

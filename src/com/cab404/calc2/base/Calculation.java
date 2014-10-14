@@ -18,7 +18,6 @@ import java.util.List;
 public class Calculation {
 
 	//	VariableProvider variables;
-//	FunctionProvider functions;
 	public NodeFactory nodeFactory;
 	public List<Node> algorithm;
 

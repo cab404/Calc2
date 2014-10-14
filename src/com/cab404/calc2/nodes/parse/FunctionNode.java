@@ -32,11 +32,55 @@ public class FunctionNode extends Node {
 			return calculated;
 		}
 
-		Node second = context.algorithm.remove(index + 1);
-		Node first = context.algorithm.remove(index - 1);
-		Node calculated = fun.calculate(first, second);
-		context.algorithm.set(index - 1, calculated);
-		return calculated;
+		Node result = null;
+
+		if ((result = tryBoth(context, index)) != null) {
+			context.algorithm.set(index, result);
+			context.algorithm.remove(index + 1);
+			context.algorithm.remove(index - 1);
+		} else if ((result = tryPrefix(context, index)) != null) {
+			context.algorithm.set(index, result);
+			context.algorithm.remove(index - 1);
+		} else if ((result = tryPostfix(context, index)) != null) {
+			context.algorithm.set(index, result);
+			context.algorithm.remove(index + 1);
+		}
+
+
+		return result;
+	}
+
+	private Node tryBoth(Calculation context, int index) {
+		if (index + 1 >= context.algorithm.size()) return null;
+		if (index - 1 < 0) return null;
+
+		Node second = context.algorithm.get(index + 1);
+		Node first = context.algorithm.get(index - 1);
+
+		if (!(first instanceof FunctionNode) && !(second instanceof FunctionNode))
+			return fun.calculate(first, second);
+		else
+			return null;
+	}
+
+	private Node tryPrefix(Calculation context, int index) {
+		if (index - 1 < 0) return null;
+		Node first = context.algorithm.get(index - 1);
+
+		if (!(first instanceof FunctionNode))
+			return fun.calculatePrefix(first);
+		else
+			return null;
+	}
+
+	private Node tryPostfix(Calculation context, int index) {
+		if (index + 1 >= context.algorithm.size()) return null;
+		Node second = context.algorithm.get(index + 1);
+
+		if (!(second instanceof FunctionNode))
+			return fun.calculatePostfix(second);
+		else
+			return null;
 	}
 
 	@Override public int priority() {

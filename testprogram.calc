@@ -1,6 +1,5 @@
-result = ( res (
-    a = 17;
-    b = 22;
-    a * b;
-)
-)
+result = res (
+        a = 17;
+        b = 22;
+        a * b;
+    )

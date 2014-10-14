@@ -15,32 +15,37 @@ import java.util.Set;
  * @author cab404
  */
 public class NestedCalculationNode extends Node {
-	public final Calculation nested;
+	public Calculation nested;
 
-	public NestedCalculationNode(Calculation base, int id) {
+	public NestedCalculationNode() {}
+
+	/**
+	 * Wraps selected brackets
+	 */
+	public void wrap(Calculation base, int id) {
 		List<Node> sublist = new ArrayList<>();
-		int bracketCheck = 0;
 
 		List<Node> exp = base.algorithm;
-		List<Integer> splits = new ArrayList<>();
 
-		for (int i = id; i < exp.size(); i++) {
-			Node node = exp.get(i);
+		int bracketCheck = 0;
+		/* Cutting the thing.*/
+
+		while (exp.size() > id) {
+			Node node = exp.remove(id);
+			sublist.add(node);
 
 			if (node instanceof ControlNode) {
 				if (((ControlNode) node).val == '(')
 					bracketCheck++;
 				if (((ControlNode) node).val == ')')
 					bracketCheck--;
-				if (((ControlNode) node).val == ';' && bracketCheck == 1)
-					splits.add(i - 1);
-
+				if (bracketCheck < 0)
+					throw new RuntimeException("Brackets wrong!");
+				System.out.println(bracketCheck + ": " + sublist);
 			}
 
 			if (bracketCheck == 0) {
-				for (int j = id; j <= i; j++)
-					sublist.add(exp.remove(id));
-
+				/* Removing brackets */
 				sublist.remove(0);
 				sublist.remove(sublist.size() - 1);
 
@@ -52,53 +57,66 @@ public class NestedCalculationNode extends Node {
 				if (!(last_node instanceof ControlNode && ((ControlNode) last_node).val == ';'))
 					nested.algorithm.add(new ControlNode(";"));
 
-				/* Calculating lines */
-				int last = 0;
-				int level = 0;
-				Set<ControlNode> calculated_lines = new HashSet<>();
-				for (int k = 0; k < nested.algorithm.size(); k++) {
-					if (nested.algorithm.get(k) instanceof ControlNode) {
-						ControlNode cast = ((ControlNode) nested.algorithm.get(k));
-
-						if (cast.val == '(') level++;
-						if (cast.val == ')') level--;
-						if ((cast.val == ';' && level == 0)) {
-							if (calculated_lines.contains(cast)) {
-								last = k + 1;
-							} else {
-								calculated_lines.add(cast);
-
-								nested.calculateSandboxed(last, k);
-
-								last = k = 0;
-							}
-						} else if (k == nested.algorithm.size() - 1) {
-							nested.calculateSandboxed(last, k + 1);
-						}
-
-					}
-				}
-
-				/* Removing all results */
-				for (Node nd : calculated_lines)
-					nested.algorithm.remove(nd);
-
-				return;
+				break;
 			}
-
-			if (bracketCheck < 0)
-				throw new RuntimeException("Brackets wrong!");
-
 		}
 
-		throw new RuntimeException("Brackets wrong!");
+		if (bracketCheck != 0)
+			throw new RuntimeException("Brackets wrong!");
 
 	}
 
-	/**
-	 * Deleting unnecessary brackets
-	 */
-	@Override public Node resolve(Calculation context, int index) {
+	private void calculate() {
+
+		/* Calculating thing */
+		int last = 0;
+		int level = 0;
+		Set<ControlNode> calculated_lines = new HashSet<>();
+
+		for (int k = 0; k < nested.algorithm.size(); k++) {
+
+			/* Searching thru all the ControlNodes... */
+			if (nested.algorithm.get(k) instanceof ControlNode) {
+				ControlNode cast = ((ControlNode) nested.algorithm.get(k));
+
+				if (cast.val == '(') level++;
+				if (cast.val == ')') level--;
+
+				/*... for a splitter... */
+				if ((cast.val == ';' && level == 0)) {
+
+					/*... and if we already calculated that line, then just updating last node. */
+					if (calculated_lines.contains(cast)) {
+						last = k + 1;
+
+					}
+					/* ... and if not - calculating value and adding line splitter to calculated values */
+					/* Then reseting cycle, 'cause something might added a new one. */
+					else {
+
+						nested.calculateSandboxed(last, k);
+
+						calculated_lines.add(cast);
+
+						last = k = 0;
+					}
+
+				}
+
+			}
+		}
+
+		/* Removing all splitters */
+		for (Node nd : calculated_lines)
+			nested.algorithm.remove(nd);
+
+	}
+
+	@Override public Node resolve(Calculation base, int id) {
+		System.out.println("ALG" + nested.algorithm);
+		calculate();
+		System.out.println("ALGAF" + nested.algorithm);
+
 		/* Resolve me! */
 		for (; ; )
 			if (nested.algorithm.size() == 1) {
@@ -107,7 +125,7 @@ public class NestedCalculationNode extends Node {
 				if (single instanceof NestedCalculationNode)
 					nested.algorithm = ((NestedCalculationNode) single).nested.algorithm;
 				else
-					return context.set(index, single);
+					return base.set(id, single);
 
 			} else
 				return null;
@@ -118,7 +136,7 @@ public class NestedCalculationNode extends Node {
 	}
 
 	@Override public int priority() {
-		return Era.VARIABLE_ERA;
+		return Era.FOLDING_ERA;
 	}
 
 	@Override public Object clone()
