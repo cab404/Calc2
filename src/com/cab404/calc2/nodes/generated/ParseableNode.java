@@ -7,7 +7,7 @@ import com.cab404.calc2.nodes.Node;
  *
  * @author cab404
  */
-public class ParseableNode extends Node {
+public abstract class ParseableNode extends Node {
 	/**
 	 * Default node constructor
 	 *

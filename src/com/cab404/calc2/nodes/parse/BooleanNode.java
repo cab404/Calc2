@@ -18,6 +18,13 @@ public class BooleanNode extends ParseableNode {
 		super(stat);
 	}
 
+	public BooleanNode(boolean bool) {
+		super(null);
+		this.value = bool;
+	}
 
-
+	@Override public Object clone()
+	throws CloneNotSupportedException {
+		return new BooleanNode(value);
+	}
 }

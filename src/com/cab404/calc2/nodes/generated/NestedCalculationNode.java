@@ -120,4 +120,9 @@ public class NestedCalculationNode extends Node {
 	@Override public int priority() {
 		return Era.VARIABLE_ERA;
 	}
+
+	@Override public Object clone()
+	throws CloneNotSupportedException {
+		return null;
+	}
 }

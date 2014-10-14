@@ -25,4 +25,8 @@ public class VariableNode extends Node {
 		return (replacement != this ? "var(" + replacement + ")" : "not-resolved");
 	}
 
+	@Override public Object clone()
+	throws CloneNotSupportedException {
+		return this;
+	}
 }

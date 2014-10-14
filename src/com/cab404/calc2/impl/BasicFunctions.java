@@ -128,7 +128,7 @@ public class BasicFunctions {
 				@Override public Node calculatePostfix(Node single) {
 					if (single instanceof NestedCalculationNode) {
 						NestedCalculationNode calc = (NestedCalculationNode) single;
-						return calc.nested.algorithm.get(calc.nested.algorithm.size() - 1);
+						return calc.calc.algorithm.get(calc.calc.algorithm.size() - 1);
 					}
 					return single;
 				}

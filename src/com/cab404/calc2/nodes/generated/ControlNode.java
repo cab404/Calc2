@@ -46,13 +46,23 @@ public class ControlNode extends ParseableNode {
 		val = stat.charAt(0);
 	}
 
+	public ControlNode(char val) {
+		super(null);
+		this.val = val;
+	}
+
 	@Override public String toString() {
-		return "'" + val + "'";
+		return "c'" + val + "'";
 	}
 
 	/* As fast as we could. But still will leave some place for others. */
 	@Override public int priority() {
 		return Era.CONTROL_ERA;
+	}
+
+	@Override public Object clone()
+	throws CloneNotSupportedException {
+		return new ControlNode(val);
 	}
 
 	@Override public Node resolve(Calculation context, int index) {
@@ -62,4 +72,5 @@ public class ControlNode extends ParseableNode {
 			throw new RuntimeException("Wrong brackets!");
 		return null;
 	}
+
 }

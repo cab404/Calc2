@@ -46,4 +46,9 @@ public class FunctionNode extends Node {
 	@Override public String toString() {
 		return fun.getName();
 	}
+
+	@Override public Object clone()
+	throws CloneNotSupportedException {
+		return new FunctionNode(fun);
+	}
 }

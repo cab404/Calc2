@@ -30,6 +30,10 @@ public class NamedNode extends Node {
 	@Override public int priority() {
 		return Era.CONTROL_ERA;
 	}
+	@Override public Object clone()
+	throws CloneNotSupportedException {
+		return new NamedNode(stat, resolver);
+	}
 
 	@Override public String toString() {
 		return String.valueOf(stat);

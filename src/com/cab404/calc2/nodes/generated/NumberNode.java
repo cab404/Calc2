@@ -40,6 +40,11 @@ public class NumberNode extends ParseableNode {
 		return super.resolve(context, index);
 	}
 
+	@Override public Object clone()
+	throws CloneNotSupportedException {
+		return new NumberNode(value);
+	}
+
 	@Override public String toString() {
 		return String.valueOf(value);
 	}
