@@ -66,6 +66,9 @@ public class NestedCalculationNode extends Node {
 
 	}
 
+	/**
+	 * Calls calculate in nested expressions
+	 */
 	private void calculate() {
 
 		/* Calculating thing */
@@ -113,9 +116,7 @@ public class NestedCalculationNode extends Node {
 	}
 
 	@Override public Node resolve(Calculation base, int id) {
-		System.out.println("ALG" + nested.algorithm);
 		calculate();
-		System.out.println("ALGAF" + nested.algorithm);
 
 		/* Resolve me! */
 		for (; ; )
@@ -141,6 +142,9 @@ public class NestedCalculationNode extends Node {
 
 	@Override public Object clone()
 	throws CloneNotSupportedException {
-		return null;
+		NestedCalculationNode clone = new NestedCalculationNode();
+		clone.nested = (Calculation) nested.clone();
+		return clone;
 	}
+
 }

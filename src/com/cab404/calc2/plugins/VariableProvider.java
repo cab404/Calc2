@@ -4,6 +4,7 @@ import com.cab404.calc2.nodes.Node;
 import com.cab404.calc2.nodes.parse.VariableNode;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * @author cab404
@@ -35,5 +36,12 @@ public class VariableProvider extends NodeForNameProvider {
 
 	@Override public int priority() {
 		return 90000;
+	}
+
+
+	@Override public NodeForNameProvider nested() {
+		VariableProvider nested = new VariableProvider();
+		nested.variables = new LinkedHashMap<>(variables);
+		return nested;
 	}
 }

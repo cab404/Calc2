@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author cab404
  */
-public class Calculation {
+public class Calculation implements Cloneable {
 
 	//	VariableProvider variables;
 	public NodeFactory nodeFactory;
@@ -160,4 +160,11 @@ public class Calculation {
 	}
 
 
+	@Override public Object clone()
+	throws CloneNotSupportedException {
+		Calculation clone = new Calculation(nodeFactory);
+		for (Node node : algorithm)
+			clone.algorithm.add((Node) node.clone());
+		return clone;
+	}
 }

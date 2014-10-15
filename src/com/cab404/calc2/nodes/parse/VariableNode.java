@@ -11,7 +11,9 @@ public class VariableNode extends Node {
 	public Node replacement = this;
 
 	@Override public Node resolve(Calculation context, int index) {
-		if (replacement instanceof VariableNode && replacement != this)
+		if (replacement == this)
+			throw new RuntimeException("Node is not defined yet!");
+		if (replacement instanceof VariableNode)
 			return replacement.resolve(context, index);
 		else
 			return context.set(index, replacement);

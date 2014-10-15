@@ -13,4 +13,6 @@ public interface NodeDefinition {
 
 	public Node instance(CharSequence body);
 
+	public NodeDefinition nested();
+
 }

@@ -58,4 +58,15 @@ public class NameResolver implements NodeDefinition {
 		return new NamedNode(body, this);
 	}
 
+
+	@Override public NodeDefinition nested() {
+		NameResolver nested = new NameResolver();
+
+		for (NodeForNameProvider provider : resolvers) {
+			nested.add(provider.nested());
+		}
+
+		return nested;
+	}
+
 }

@@ -135,7 +135,7 @@ public class BasicFunctions {
 
 				/** Right after nested */
 				@Override public int priority() {
-					return Era.FOLDING_ERA + 1;
+					return Era.FOLDING_ERA + 20;
 				}
 
 			};

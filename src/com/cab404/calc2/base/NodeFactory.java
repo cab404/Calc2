@@ -32,4 +32,13 @@ public class NodeFactory {
 		throw new NodeTypeIrresolvableException();
 	}
 
+	public NodeFactory getNestedFactory() {
+		NodeFactory fct = new NodeFactory();
+
+		for (NodeDefinition def : registeredDefenitions)
+			fct.register(def);
+
+		return fct;
+	}
+
 }

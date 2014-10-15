@@ -5,6 +5,7 @@ import com.cab404.calc2.nodes.Node;
 import com.cab404.calc2.plugins.NodeForNameProvider;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * @author cab404
@@ -31,6 +32,12 @@ public class FunctionProvider extends NodeForNameProvider {
 
 	@Override public int priority() {
 		return 0;
+	}
+
+	@Override public NodeForNameProvider nested() {
+		FunctionProvider nested = new FunctionProvider();
+		nested.registry = new LinkedHashMap<>(registry);
+		return nested;
 	}
 
 

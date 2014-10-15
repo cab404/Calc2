@@ -46,4 +46,7 @@ public class NodeDefinitionImpl implements NodeDefinition {
 		}
 	}
 
+	@Override public NodeDefinition nested() {
+		return this;
+	}
 }
