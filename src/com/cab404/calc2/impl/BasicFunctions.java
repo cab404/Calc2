@@ -13,7 +13,6 @@ import com.cab404.calc2.nodes.parse.VariableNode;
 public class BasicFunctions {
 
 	public static final PluginFunction
-
 			SUM = new PluginFunction() {
 		@Override public String getName() {
 			return "+";
@@ -73,27 +72,26 @@ public class BasicFunctions {
 				}
 
 			},
+			MUL = new PluginFunction() {
+				@Override public String getName() {
+					return "*";
+				}
+				@Override public Node calculatePrefix(Node single) {
+					throw new UnsupportedOperationException();
+				}
+				@Override public Node calculate(Node first, Node second) {
+					double sum = ((NumberNode) first).value * ((NumberNode) second).value;
+					return new NumberNode(sum);
+				}
 
-	MUL = new PluginFunction() {
-		@Override public String getName() {
-			return "*";
-		}
-		@Override public Node calculatePrefix(Node single) {
-			throw new UnsupportedOperationException();
-		}
-		@Override public Node calculate(Node first, Node second) {
-			double sum = ((NumberNode) first).value * ((NumberNode) second).value;
-			return new NumberNode(sum);
-		}
+				@Override public Node calculatePostfix(Node single) {
+					throw new UnsupportedOperationException();
+				}
+				@Override public int priority() {
+					return Era.FUNCTIONAL_ERA + 100;
+				}
 
-		@Override public Node calculatePostfix(Node single) {
-			throw new UnsupportedOperationException();
-		}
-		@Override public int priority() {
-			return Era.FUNCTIONAL_ERA + 100;
-		}
-
-	},
+			},
 			EQ = new PluginFunction() {
 				@Override public String getName() {
 					return "=";
@@ -102,7 +100,7 @@ public class BasicFunctions {
 					throw new UnsupportedOperationException();
 				}
 				@Override public Node calculate(Node first, Node second) {
-					((VariableNode) first).replacement = second;
+					((VariableNode) first).set(second);
 					return second;
 				}
 

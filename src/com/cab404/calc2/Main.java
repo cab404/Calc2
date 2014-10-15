@@ -33,19 +33,21 @@ public class Main implements Runnable {
 		fp.register(BasicFunctions.RES);
 		fp.register(BasicFunctions.EQ);
 
+		VariableProvider vars = new VariableProvider();
 		def.add(fp);
-		def.add(new VariableProvider());
+		def.add(vars);
 
 		factory.register(def);
 
 		Calculation calculation = new Calculation(factory);
 
-
 		try {
 
 
 			File test = new File("testprogram.calc");
+
 			StringBuilder builder = new StringBuilder();
+
 			try {
 				BufferedReader reader = new BufferedReader(new FileReader(test));
 				String read = null;
@@ -57,13 +59,21 @@ public class Main implements Runnable {
 			}
 
 			calculation.prepare(builder);
-			System.out.println("start: " + calculation.algorithm);
-			calculation.calculate();
-			System.out.println("final: " + calculation.algorithm);
 
+
+			vars.getVariable("x").set(new NumberNode(1));
+			vars.getVariable("y").set(new NumberNode(2));
+
+			Calculation clone = (Calculation) calculation.clone();
+			clone.calculate();
+			System.out.println(clone.algorithm);
+
+			vars.getVariable("x").set(new NumberNode(3));
+			vars.getVariable("y").set(new NumberNode(4));
+			calculation.calculate();
 			System.out.println(calculation.algorithm);
 
-		} catch (ParseException e) {
+		} catch (ParseException | CloneNotSupportedException e) {
 			throw new RuntimeException(e);
 		}
 	}

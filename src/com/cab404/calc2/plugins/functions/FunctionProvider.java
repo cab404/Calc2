@@ -11,8 +11,6 @@ import java.util.LinkedHashMap;
  * @author cab404
  */
 public class FunctionProvider extends NodeForNameProvider {
-	public static final String NAME = "FunctionProvider";
-
 	HashMap<String, PluginFunction> registry = new HashMap<>();
 
 	public void register(PluginFunction fn) {

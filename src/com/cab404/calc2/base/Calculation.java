@@ -7,7 +7,6 @@ import com.cab404.calc2.nodes.parse.NodeDefinition;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -38,7 +37,6 @@ public class Calculation implements Cloneable {
 	}
 
 	public void calculate() {
-		HashSet<Node> processed = new HashSet<>();
 		List<Node> priorities = new ArrayList<>();
 
 		/* Preparing priority list */
@@ -51,16 +49,41 @@ public class Calculation implements Cloneable {
 			Collections.sort(priorities);
 			Node node = priorities.remove(0);
 
-			if (!processed.contains(node)) {
-				if (algorithm.contains(node)) {
-					Node new_node = node.resolve(this, algorithm.indexOf(node));
+			if (algorithm.contains(node)) {
+				Node new_node = node.resolve(this, algorithm.indexOf(node));
 
-					if (new_node != null)
-						priorities.add(new_node);
+				if (new_node != null)
+					priorities.add(new_node);
 
-				} else
-					iter++;
-			}
+			} else
+				iter++;
+
+		}
+	}
+
+
+	public void calculateToLevel(int level) {
+		List<Node> priorities = new ArrayList<>();
+
+		/* Preparing priority list */
+		priorities.addAll(algorithm);
+
+		int iter = 0;
+
+		/* Resolving all nodes */
+		while (!priorities.isEmpty()) {
+			Collections.sort(priorities);
+			Node node = priorities.remove(0);
+			if (node.priority() > level) continue;
+
+			if (algorithm.contains(node)) {
+				Node new_node = node.resolve(this, algorithm.indexOf(node));
+
+				if (new_node != null)
+					priorities.add(new_node);
+
+			} else
+				iter++;
 
 		}
 
@@ -69,16 +92,6 @@ public class Calculation implements Cloneable {
 	private Calculation(Calculation base, int start, int end) {
 		nodeFactory = base.nodeFactory;
 		algorithm = base.algorithm.subList(start, end);
-	}
-
-	private void onNestedCreation(Calculation nested) {
-//		try {
-//			NamedNodeDefinition def = (NamedNodeDefinition) nodeFactory.getNodeDefinition('n', 'a');
-
-
-//		} catch (NodeTypeIrresolvableException e) {
-//			throw new RuntimeException("Cannot get named node definition", e);
-//		}
 	}
 
 	/**
@@ -91,8 +104,7 @@ public class Calculation implements Cloneable {
 
 
 	public Calculation(Calculation base) {
-		nodeFactory = base.nodeFactory;
-		base.onNestedCreation(this);
+		nodeFactory = base.nodeFactory.getNestedFactory();
 	}
 
 	public Calculation(NodeFactory nodeFactory) {

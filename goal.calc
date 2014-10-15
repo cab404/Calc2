@@ -1,0 +1,15 @@
+res {
+    def ^ (number; power) (
+        i = 1; num = number;
+
+        while (i < power) (
+            num = (num * number)
+        );
+
+        number
+    );
+
+    ^(12 32)
+
+    12 ^ 32
+}

@@ -41,7 +41,6 @@ public class NestedCalculationNode extends Node {
 					bracketCheck--;
 				if (bracketCheck < 0)
 					throw new RuntimeException("Brackets wrong!");
-				System.out.println(bracketCheck + ": " + sublist);
 			}
 
 			if (bracketCheck == 0) {
@@ -137,7 +136,7 @@ public class NestedCalculationNode extends Node {
 	}
 
 	@Override public int priority() {
-		return Era.FOLDING_ERA;
+		return Era.CONTROL_ERA + 1000;
 	}
 
 	@Override public Object clone()
