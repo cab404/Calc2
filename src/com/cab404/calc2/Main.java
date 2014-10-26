@@ -5,6 +5,7 @@ import com.cab404.calc2.base.NodeFactory;
 import com.cab404.calc2.impl.BasicFunctions;
 import com.cab404.calc2.nodes.generated.ControlNode;
 import com.cab404.calc2.nodes.generated.NumberNode;
+import com.cab404.calc2.nodes.generated.keywords.KeywordProvider;
 import com.cab404.calc2.plugins.functions.FunctionProvider;
 import com.cab404.calc2.plugins.NameResolver;
 import com.cab404.calc2.plugins.VariableProvider;
@@ -36,6 +37,7 @@ public class Main implements Runnable {
 		VariableProvider vars = new VariableProvider();
 		def.add(fp);
 		def.add(vars);
+		def.add(new KeywordProvider());
 
 		factory.register(def);
 

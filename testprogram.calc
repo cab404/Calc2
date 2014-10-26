@@ -1,5 +1,15 @@
 res (
+
+    fct = 1;
+    i = 10;
+
+    while (i)(
+        fct = (fct * i);
+        i = (i - 1)
+    );
+
     a = (x + y);
     b = (x - y);
     b = (b * b);
+    fct;
 )
